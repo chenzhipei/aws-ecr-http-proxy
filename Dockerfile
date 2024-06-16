@@ -2,14 +2,16 @@ FROM openresty/openresty:1.25.3.1-4-alpine-fat
 
 USER root
 
-RUN apk add -v --no-cache bind-tools python3 py-pip py3-urllib3 py3-colorama supervisor \
- && mkdir /cache \
- && addgroup -g 110 nginx \
- && adduser -u 110  -D -S -h /cache -s /sbin/nologin -G nginx nginx \
- && pip install --upgrade pip awscli==1.33.8 \
- && apk -v --purge del py-pip
+RUN apk add -v --no-cache bind-tools python3 py3-urllib3 py3-colorama supervisor \
+    && mkdir /cache \
+    && addgroup -g 110 nginx \
+    && adduser -u 110  -D -S -h /cache -s /sbin/nologin -G nginx nginx \
+    && python3 -m venv /venv \
+    && . /venv/bin/activate \
+    && pip install --upgrade pip awscli==1.33.8 \
+    && deactivate
 
-COPY files/startup.sh files/renew_token.sh files/health-check.sh  /
+COPY files/startup.sh files/renew_token.sh files/health-check.sh files/dns-check.sh /
 COPY files/ecr.ini /etc/supervisor.d/ecr.ini
 COPY files/root /etc/crontabs/root
 

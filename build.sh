@@ -1,1 +1,1 @@
-docker build --no-cache=true -t steedos/aws-ecr-http-proxy:2.0.1 .
+docker build --no-cache=true -t steedos/aws-ecr-http-proxy:2.0.2 .
