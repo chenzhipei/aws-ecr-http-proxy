@@ -1,4 +1,5 @@
 #!/bin/sh
+. /venv/bin/activate
 
 set -e
 set -x
